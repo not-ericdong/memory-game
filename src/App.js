@@ -1,9 +1,16 @@
-import './App.css';
+import './App.css'
+import Header from './components/header';
+import Score from './components/score';
+import Game from './components/game'
 
 function App() {
   return (
     <div className="App">
-      hihi
+      <Header />
+      <div className="body">
+        <Score /> 
+        <Game />
+      </div>
     </div>
   );
 }
