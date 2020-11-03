@@ -2,8 +2,7 @@ import React, {useState, useEffect} from "react";
 
 function Game() {
    const [pictureCards, setPictureCards] = useState([]);
-   const [picIndex, setPicIndex] = useState([]);
-   const [hiddenOrNot, setHiddenOrNot] = useState(true);
+   const [clickCounter, setClickCounter] = useState(0);
 
    useEffect(() => {
       fetch(`https://dog.ceo/api/breed/corgi/images/random/8`)
@@ -30,17 +29,25 @@ function Game() {
       return secondArray
    }
 
-   function reveal() {
-      setHiddenOrNot(!hiddenOrNot);
+   function reveal(index) {
+      let element = document.getElementsByClassName('index'+String(index))
+      element[0].classList.toggle('hidden')
+   };
+   
+
+   //function to get id and src of img
+   //if two clicks match -> keeps them open 
+   function doubleClick(id, img) {
+      
    }
 
    return (
       <div className="game">
          {pictureCards.map((dog, index) => (
-            <button onClick={reveal}>
-               <img 
-               className={hiddenOrNot ? "hidden" : "dogs"} 
-               id={index} 
+            <button onClick={() => reveal(index)}>
+               <img
+               className={'hidden index'+String(index)} 
+               id="dogs" 
                type="image" 
                src={dog} 
                alt=""

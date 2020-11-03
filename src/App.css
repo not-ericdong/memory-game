@@ -13,10 +13,12 @@
 }
 
 .score {
+  padding-left: 30px;
   float: left;
 }
 
 .timer {
+  padding-right: 30px;
   float: right;
 }
 
@@ -37,6 +39,8 @@
   height: 200px;
   width: 100%;
   border-style: hidden;
+  min-width: 190px;
+  min-height: 190px;
 }
 
 img {
@@ -48,6 +52,6 @@ img {
   display: none;
 }
 
-.dogs {
+#dogs {
   object-fit: cover;
 }
