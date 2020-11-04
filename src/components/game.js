@@ -41,30 +41,22 @@ function Game() {
    function reveal(index) {
       let element = document.getElementsByClassName('index'+String(index));
       element[0].classList.remove('hidden');
-
+      
       getItemClicked(element)
 
       setClickCounter(prevClicks => prevClicks + 1)
-      console.log(clickCounter)
    };
    
-
-   //function to get class and src of img
    function getItemClicked(clickedOn) {
       let image = clickedOn[0]
       setClickArray(prevArray => [...prevArray, image])
-      // console.log(clickedOn[0])
-      // console.log(image)
-      console.log(clickArray)
    }
 
-   //if two clicks match -> keeps them open 
-   //if they dont match wait 1 sec and hide both of them again
    function ifMatch() {
       if (clickArray.length === 2)  {
-         if (clickArray[0].src === clickArray[1].src) {
-            console.log(clickArray[0].src)
-            console.log(clickArray[1].src)
+         if (clickArray[0].src === clickArray[1].src ) {
+            clickArray[0].classList.add('show');
+            clickArray[1].classList.add('show');
             // clickedOn[0].classList.toggle('show');
          } else {
          setTimeout(function(){
