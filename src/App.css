@@ -52,6 +52,10 @@ img {
   display: none;
 }
 
+.show {
+  display: inline !important; 
+}
+
 #dogs {
   object-fit: cover;
 }
