@@ -1,9 +1,13 @@
 import React, {useState, useEffect} from "react";
+import Score from './score';
 
 function Game() {
    const [pictureCards, setPictureCards] = useState([]);
    const [clickCounter, setClickCounter] = useState(0);
+   const [clickScore, setClickScore] = useState(0);
    const [clickArray, setClickArray] = useState([]);
+   const [numberOfMatches, setNumberOfMatches] = useState(0);
+   const [buttonBroken, setButtonBroken] = useState(false);
 
    useEffect(() => {
       fetch(`https://dog.ceo/api/breed/corgi/images/random/8`)
@@ -17,7 +21,7 @@ function Game() {
          setClickCounter(0);
          setClickArray([]);
       }
-   }, [clickCounter])
+   }, [clickCounter, numberOfMatches, buttonBroken])
 
    function shuffle(arrayShuffled) {
       for (let x = arrayShuffled.length-1; x > 0; x--) {
@@ -45,6 +49,7 @@ function Game() {
       getItemClicked(element)
 
       setClickCounter(prevClicks => prevClicks + 1)
+      setClickScore(prevScore => prevScore + 1)
    };
    
    function getItemClicked(clickedOn) {
@@ -54,31 +59,46 @@ function Game() {
 
    function ifMatch() {
       if (clickArray.length === 2)  {
-         if (clickArray[0].src === clickArray[1].src ) {
+         if (clickArray[0] !== clickArray[1] && clickArray[0].src === clickArray[1].src ) {
             clickArray[0].classList.add('show');
             clickArray[1].classList.add('show');
-            // clickedOn[0].classList.toggle('show');
+            setNumberOfMatches(prevNum => prevNum + 1)
+            console.log(numberOfMatches)
+            if (numberOfMatches === 7) {
+               alert("You Win! Press the start button to play again.")
+               setNumberOfMatches(0)
+            }
          } else {
+         setButtonBroken(true)
          setTimeout(function(){
             clickArray[0].classList.add('hidden');
             clickArray[1].classList.add('hidden');
+            setButtonBroken(false)
          }, 1000);
       }}
    }
 
+   function resetGame() {
+      setClickScore(0)
+      
+   }
+
    return (
-      <div className="game">
-         {pictureCards.map((dog, index) => (
-            <button onClick={() => reveal(index)}>
-               <img
-               className={'hidden index'+String(index)} 
-               id="dogs" 
-               type="image" 
-               src={dog} 
-               alt=""
-               />
-            </button>
-         ))}
+      <div>
+         <Score score={clickScore}/> 
+         <div className="game">
+            {pictureCards.map((dog, index) => (
+               <button onClick={() => reveal(index)} key={index} disabled={buttonBroken}>
+                  <img
+                  className={'hidden index'+String(index)} 
+                  id="dogs"
+                  type="image" 
+                  src={dog} 
+                  alt=""
+                  />
+               </button>
+            ))}
+         </div>
       </div>
    );
 }
