@@ -2,9 +2,7 @@
 
 Memory card matching game
 
-# Future implementations (in the works)
+# Future implementations
 
-* only allow two tiles be clicked on at once
-* score and timer
 * breed select
 * change number of tiles
