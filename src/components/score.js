@@ -15,15 +15,15 @@ function Score(props) {
       setTime(prevTime => prevTime + 1);
    }
 
-   //add a refresh the game button
-   //resets timer -starts timer
-   //hides pictures
-   //resets score
+   //-starts timer
+   function resetTime() {
+      setTime(0);
+   }
 
    return (
       <div>
          <p className="score">Clicks: {props.score} </p>
-         <button onClick={tick}>START</button>
+         <button onClick={() => {props.reset(); resetTime();}}>Play Again</button>
          <p className="timer">Time: {time}</p>
       </div>
   );

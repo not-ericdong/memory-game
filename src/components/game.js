@@ -10,9 +10,7 @@ function Game() {
    const [buttonBroken, setButtonBroken] = useState(false);
 
    useEffect(() => {
-      fetch(`https://dog.ceo/api/breed/corgi/images/random/8`)
-         .then(res => res.json())
-         .then(json => setPictureCards(shuffle(duplicate(json.message))))
+      getDogImages();
    }, [])
 
    useEffect(() => {
@@ -22,6 +20,12 @@ function Game() {
          setClickArray([]);
       }
    }, [clickCounter, numberOfMatches, buttonBroken])
+
+   function getDogImages() {
+      fetch(`https://dog.ceo/api/breed/corgi/images/random/8`)
+         .then(res => res.json())
+         .then(json => setPictureCards(shuffle(duplicate(json.message))))
+   }
 
    function shuffle(arrayShuffled) {
       for (let x = arrayShuffled.length-1; x > 0; x--) {
@@ -45,16 +49,14 @@ function Game() {
    function reveal(index) {
       let element = document.getElementsByClassName('index'+String(index));
       element[0].classList.remove('hidden');
-      
-      getItemClicked(element)
-
-      setClickCounter(prevClicks => prevClicks + 1)
-      setClickScore(prevScore => prevScore + 1)
+      getItemClicked(element);
+      setClickCounter(prevClicks => prevClicks + 1);
+      setClickScore(prevScore => prevScore + 1);
    };
    
    function getItemClicked(clickedOn) {
-      let image = clickedOn[0]
-      setClickArray(prevArray => [...prevArray, image])
+      let image = clickedOn[0];
+      setClickArray(prevArray => [...prevArray, image]);
    }
 
    function ifMatch() {
@@ -62,30 +64,35 @@ function Game() {
          if (clickArray[0] !== clickArray[1] && clickArray[0].src === clickArray[1].src ) {
             clickArray[0].classList.add('show');
             clickArray[1].classList.add('show');
-            setNumberOfMatches(prevNum => prevNum + 1)
-            console.log(numberOfMatches)
+            setNumberOfMatches(prevNum => prevNum + 1);
             if (numberOfMatches === 7) {
-               alert("You Win! Press the start button to play again.")
-               setNumberOfMatches(0)
+               setNumberOfMatches(0);
+               alert(`You Won! With ${clickScore} clicks. Press the 'Play Again' button to play again.`);
             }
          } else {
-         setButtonBroken(true)
+         setButtonBroken(true);
          setTimeout(function(){
             clickArray[0].classList.add('hidden');
             clickArray[1].classList.add('hidden');
-            setButtonBroken(false)
+            setButtonBroken(false);
          }, 1000);
       }}
    }
 
    function resetGame() {
-      setClickScore(0)
-      
+      let images = document.getElementsByTagName('img')
+      console.log(images)
+      for (let x=0; x<images.length; x++) {
+         images[x].classList.remove('show')
+         images[x].classList.add('hidden')
+      }
+      setClickScore(0);
+      getDogImages();
    }
 
    return (
       <div>
-         <Score score={clickScore}/> 
+         <Score score={clickScore} reset={resetGame}/> 
          <div className="game">
             {pictureCards.map((dog, index) => (
                <button onClick={() => reveal(index)} key={index} disabled={buttonBroken}>
